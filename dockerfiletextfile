@@ -1,0 +1,159 @@
+What: 
+Docker is an opensource containerization platform that allows you to package an application with all
+its dependencies into a lightweight until called a portable containers. It was
+originally generated 2013 
+---------------------------
+Why: 
+previously, application often failed when moved between environment means from 
+developer lappy to a production server, we commonly know ->it works on my machine 
+so docker solve this problem to by packaging the application code, runtime, system
+libraries, Dependencies, configuration into a container that has own filesystem
+and run isolated consistently. 
+-------------------------------
+container: 
+Lightweight and isolated from other applications and faster from virtual machine
+and these are built from a docker image.unlike virtual machine, container shares
+the host kernal, making them much more efficient
+---------------------------------
+docker architecture
+docker client commands in terminal- who sends request to docker daemon and docker
+daemon execute these commands...
+docker build 
+docker pull 
+docker run 
+----------------------------------
+docker daemon - works as an engine, it will run in background  as dockered process
+it will build images and run the containers and create network and manage the 
+volumes, basically it does the actual work !
+---------------------------------
+docker registry - "Image store"
+this is a storage where we keep docker images called docker hub
+---------------------------------
+docker image: It is a readymade template or blueprint of image, wcich create container
+includes: App code, Runtime node,python, liabraries, dependencies, configurations,
+this is read only,this is immutable, never change
+---------------------------------------
+container - Running App, this is the runnig version of an image
+docker run any_image ->create a container from imageand run, container is light
+weight, isolated and can start, stop and delete
+-----------------------------------
+dockerfile- this is an instructions text file
+-which base image will use
+-which code should be copied
+-which command should run
+ex: FROM node:18
+WORKDIR /app
+COPY ..
+RUN npm install
+CMD ["node", "app.js"]
+-----in terminal-----
+dcoker build -t myapp .
+----------------------------------------
+volume - "Data Storage" 
+basically when container delete then its related data will be deleted
+we create to store data data permanently..
+usecases: 
+-database data
+-logs
+-uploaded files 
+command: docker run -v myvolume:/data nginx
+volume = External Hard Drive
+-----------------------------------------
+Network: Container ka internet
+through this container can direct communicate b/w containers 
+example: 
+one container: frontend |  sec container: backend
+docker will create a default network and we can create custom network as well,
+it will act as wifi...
+example: docker network create mynetwork
+-----------------------------------
+Complete flow step by step 
+docker run nginx : 
+-docker client sends command to daemon 
+-docker daemon check image is local or not 
+-if not so it will pull be docker hub registry 
+-it will run container from image
+----------------------------------
+difference b/w image commands vs container commands 
+bash commands: 
+docker pull nginx 
+docker images 
+docker rmi nginx 
+------------------
+container commands
+docker run -d -p 8080:80 nginx
+docker ps
+docker ps -a
+docker stop <container_id>
+docker start <container_id>
+docker rm <container_id> 
+------------------Docker commands----- 
+docker pull <image_name> 
+docker images 
+#create container with container id and show green dot on images section in docker desktop
+docker run <image_name>  
+docker run -it <image_name> like ubuntu 
+#so now we have seperate contaienr where we run our simple commands and run apllication in nginx server
+docker stop cont_name or cont_id 
+docker start cont_name or cont_id 
+docker rmi <image_name> like ubuntu 
+docker rm <conatiner_name> any containr name 
+----------now working on version of docker images and images command-----------  
+#like if we call docker pull image_name then we have latest image and if we want to have
+#docker image with version or can say with tag so here we have different two images so we
+#can create two different isotated container or run different application simenteneously..
+docker pull image_name:version  
+#-d means we can run container with deattached mode bcs bydefault container runs on attach mode
+#like for sql image or any specific then we need to read instructions..
+#and here we use new environment variable -e, bcs we need to set root passowrd environment...
+docker run -d image_name
+#we can customize container name as per our understanding
+docker run --name <cont_nam> -d <image_name> 
+#run two container with latest and older image 
+docker run -d -e MYSQL_ROOT_PASSWORD=secretnew --name sql-latest mysql
+docker run -d -e MYSQL_ROOT_PASSWORD=secretold --name mysql-older mysql:8.0
+usage: docker run -d -e MYSQL_ROOT_PASSWORD=anypassword --name mycont_name 
+-----------docker image layer-----
+container ->layer1 ->layer2 ->Base layer(linux)
+when we create a layer, a new writable layer(called container layer) is added on top of
+underlying base layer called linux , the layer comes b/w base images to layer are immutable
+they can change , we can only change container layer...
+like if we work on two images then they have theor own layers so they are immutable or can't
+change an it called already exist... 
+-------------port binding---------------
+docker run -p 8080:3306 image_name
+, yeh dono image me joh common por hai yeh container port hai, host port nhi hai
+like host port would be different even container ports are same... 
+mapping ke process ko port binding kehte hai...
+docker run -d -e MYSQL_ROOT_PASSWORD=secretnew --name mysql-latest -p8080:3306 mysql
+docker run -d -e MYSQL_ROOT_PASSWORD=secretold --name mysql-older -p3000:3306 mysql
+now we have two different container whcih is bind with two different host container
+-----------TROUBLESHOOT COMMANDS---------------
+docker logs CONT_ID 
+we can check logs of container
+usage: docker logs mysql-latest
+docker exec -it CONT_ID /bin/bash 
+we can run one or more additional commands in running container
+so we can access or use bash
+docker exec -it CONT_ID /bin/sh
+or we can access or use sh
+usage: docker exec -it mysql-latest /bin/bash ->now we can enter into bash pr run any commnd
+ls , pwd, env ->check for environment variable
+exit ->it does not stop the container, come out from interactive session
+clear
+container is still running...
+---------docker vs vm--------
+1.hardware ->2.host kernal os ->3.application layer 
+so here docker use only application layer and share host and virtulaization on application layer only 
+but in vm , it takes kernal host(2) + application layer ->so it becomes heavy and docker is light-weight
+---ADVANTAGE OF Docker is it is based on linux, so mosty images are linux based , so can we run
+these into window and macos, so here we use docker desktop, this is add a hypervisor layer to
+our system , so easily we can run container easilt on window and mac, basically docker desktop 
+containes linux based virtual machine which helps us run a container...so when we work on docker
+in production so we prefer linux based os , so it becomes easy and compatible
+-----------DEVELOPING WITH DOCKER------------
+Docker Network - dcoker network create network_name 
+# to check all network of docker, every network has theor own name, id , driver and scope.
+usage: docker network ls 
+# we need that without port, container can talk so here we use network, it will create a isolted network where container an talk each other without local host or port...  
+

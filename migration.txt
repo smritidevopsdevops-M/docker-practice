@@ -1,0 +1,25 @@
+agent vs agentless applicance in azure migrate?
+OVA(this agentless appliance) file for VMware 
+----
+✅ Agent-Based Discovery (Used When?)
+
+Used when:
+
+Physical servers
+
+Other cloud VMs (AWS, GCP)
+
+Hypervisor access not available
+
+Non-VMware environments
+
+Here, you install an agent inside each server to collect data.
+💡 Simple Way to Remember
+
+If hypervisor (like VMware) exists →
+👉 You can use Agentless
+
+If no hypervisor control (physical or other cloud) →
+👉 You must use Agent-based
+---------------------
+The Mobility Service Agent is a small software installed inside a server when doing agent-based migration using Azure Migrate.
