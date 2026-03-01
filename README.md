@@ -42,6 +42,18 @@ git log
 git log --oneline 
 #to reset last commit
 git reset --soft HEAD~1
+#Types of branches 
+main -> Production branch 
+develop -> Integration Branch 
+features/xyz -> feature branch where code updated in daily basis 
+Always switch develop branch from visual studio, left cornor side then create feature branch and push code into develop branch
+when its approved by reviewer at the time of merge then you can merge into main branch after approval and this has tobe manual for safe side, soit helps to safe production code...  
+#how we can create develop branch 
+git checkout main #come to main branch
+git pull origin main #pull all code from main branch for latest code
+git checkout -b develop #create and checkout for develop branch 
+git push -u origin develop #-u means --set-upstream
+
 
 
 
